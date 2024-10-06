@@ -10,17 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Get the latest commit message
+        id: commit_msg
+        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Validate commit message format
-        run: bash ci/check_commits.sh $GITHUB_EVENT_PATH
+        run: bash ci/check_commits.sh "$commit_message"
 
 
   # build-documentation:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout repository
-  #       uses: actions/checkout@v2
+  #       uses: actions/checkout@v3
 
   #     - name: Set up Python
   #       uses: actions/setup-python@v2
