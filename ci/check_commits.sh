@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Commit message pattern
-COMMIT_MSG_REGEX="(feat|fix|docs|style|refactor|test|chore): .+"
+COMMIT_MSG_REGEX="^ ?(feat|fix|docs|style|refactor|test|chore): .+"
 
 commit_message="$1"
 
 if ! echo "$commit_message" | grep -qE "$COMMIT_MSG_REGEX"; then
   echo "Error: The commit message does not follow conventions."
-  echo "The message must begin with one of the following regex: (feat|fix|docs|style|refactor|test|chore): .+"
+  echo "The message must begin with one of the following regex: ^ ?(feat|fix|docs|style|refactor|test|chore): .+"
   exit 1
 fi
 
