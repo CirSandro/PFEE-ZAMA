@@ -16,4 +16,4 @@ if [ ${#commit_message} -gt 50 ]; then
   echo "Error: The commit message exceeds 50 characters."
   echo "Current length: ${#commit_message}. The maximum allowed is 50 characters."
   exit 1
-fi 
+fi
