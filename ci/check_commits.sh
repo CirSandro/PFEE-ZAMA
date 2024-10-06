@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Commit message pattern
+# Commit message pattern 
 COMMIT_MSG_REGEX="^ ?(feat|fix|docs|style|refactor|test|chore): .+"
 
 commit_message="$1"
