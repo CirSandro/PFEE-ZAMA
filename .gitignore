@@ -1,0 +1,48 @@
+# Ignorer les fichiers de cache Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+
+# Ignorer les fichiers de cache Jupyter Notebook
+.ipynb_checkpoints/
+
+# Ignorer les fichiers générés par les environnements virtuels
+venv/
+env/
+ENV/
+.venv/
+.pyenv/
+
+# Ignorer les fichiers de configuration des éditeurs
+.vscode/
+.idea/
+
+# Ignorer les fichiers temporaires et les logs
+*.log
+*.tmp
+*.temp
+
+# Ignorer les bases de données locales
+*.sqlite3
+*.db
+
+# Ignorer les fichiers de données sensibles
+*.csv
+*.json
+*.h5
+*.hdf5
+
+# Ignorer les clés SSH et informations sensibles
+*.pem
+*.key
+*.crt
+
+# Ignorer les fichiers téléchargés
+downloads/
+
+# model
+.pkl

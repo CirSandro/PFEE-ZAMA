@@ -58,3 +58,9 @@ pip install -r requirements.txt
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-BSD--3--Clause--Clear-%23ffb243?style=flat-square"></a>
   <a href="https://github.com/zama-ai/bounty-program"><img src="https://img.shields.io/badge/Contribute-Zama%20Bounty%20Program-%23ffd208?style=flat-square"></a>
 </p> -->
+
+### Dataset
+
+```
+https://www.kaggle.com/datasets/dhanushnarayananr/credit-card-fraud
+```
