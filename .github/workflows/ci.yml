@@ -6,19 +6,26 @@ on:
       - '**'
 
 jobs:
-  validate-commit-message:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get the latest commit message
-        id: commit_msg
-        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+      - name: Set commit message
+        run: |
+          # Récupère le dernier message de commit et remplace les retours à la ligne par des espaces
+          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ')
+          echo "commit_message=${COMMIT_MSG}" >> $GITHUB_ENV
 
-      - name: Validate commit message format
-        run: bash ci/check_commits.sh "$commit_message"
+      - name: Debug commit message
+        run: |
+          echo "Le dernier message de commit est : $commit_message"
 
+      - name: Validate commit message
+        run: |
+          ./ci/check_commits.sh "$commit_message"
 
   # build-documentation:
   #   runs-on: ubuntu-latest
