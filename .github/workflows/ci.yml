@@ -1,44 +1,48 @@
 name: CI
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   validate-commit-message:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v2
+jobs:
+  validate-commit-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-#       - name: Validate commit message format
-#         run: bash ci/check_commit_message.sh $GITHUB_EVENT_PATH
+      - name: Get the latest commit message
+        id: commit_msg
+        run: echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Validate commit message format
+        run: bash ci/check_commits.sh "$commit_message"
 
 
-#   build-documentation:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v2
+  # build-documentation:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.x'
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.x'
 
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -r requirements.txt
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
 
-#       - name: Build documentation
-#         run: |
-#           cd docsource
-#           make html
+  #     - name: Build documentation
+  #       run: |
+  #         cd docsource
+  #         make html
 
-#       - name: Upload documentation artifact
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: documentation
-#           path: docsource/build/html
+  #     - name: Upload documentation artifact
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: documentation
+  #         path: docsource/build/html
