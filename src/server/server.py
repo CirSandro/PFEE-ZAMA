@@ -6,7 +6,7 @@ import uvicorn
 
 app = FastAPI()
 
-# Charger le modèle FHE
+# Load the FHE model
 fhe_directory = os.path.join(os.path.abspath(os.getcwd()), 'models', 'fhe_files')
 server = FHEModelServer(path_dir=fhe_directory)
 server.load()
@@ -32,7 +32,7 @@ async def receive_evaluation_keys(request: EvaluationKeysRequest):
     evaluation_keys = bytes.fromhex(request.keys)
     with open(os.path.join(fhe_directory, 'serialized_evaluation_keys.ekl'), 'wb') as f:
         f.write(evaluation_keys)
-    return {'status': 'Clés reçues'}
+    return {'status': 'Keys received'}
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)
