@@ -6,3 +6,9 @@ pandas
 sphinx
 sphinx_rtd_theme
 xgboost
+fastapi.github 
+uvicorn
+joblib
+scikit-learn
+pytest
+httpx
