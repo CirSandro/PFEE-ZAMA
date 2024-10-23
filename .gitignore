@@ -10,7 +10,7 @@ build/
 # Ignorer les fichiers de cache Jupyter Notebook
 .ipynb_checkpoints/
 
-# Ignorer les environnements virtuels
+# Ignorer les fichiers générés par les environnements virtuels
 venv/
 env/
 ENV/
@@ -35,13 +35,6 @@ ENV/
 *.json
 *.h5
 *.hdf5
-dataset/
-myenv/
-src/__pycache__/
-src/client/__pycache__/
-src/server/__pycache__/
-tests/__pycache__/
-.pytest_cache/
 
 # Ignorer les clés SSH et informations sensibles
 *.pem
@@ -51,8 +44,5 @@ tests/__pycache__/
 # Ignorer les fichiers téléchargés
 downloads/
 
-# Ignorer les fichiers de modèles
-*.pkl
-
-# Ignorer les fichiers du modèle FHE
-/models/fhe_files
+# model
+.pkl

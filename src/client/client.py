@@ -4,9 +4,8 @@ import os
 from concrete.ml.deployment import FHEModelClient
 import joblib
 from pydantic import BaseModel
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 import uvicorn
-import time
 
 app = FastAPI()
 
@@ -39,12 +38,8 @@ class PredictionRequest(BaseModel):
     used_chip: int
     used_pin_number: int
     online_order: int
-
 @app.post('/predict')
 async def predict(request: PredictionRequest):
-    # Start time measurement
-    total_start_time = time.time()
-
     # Retrieve user-input data
     input_data = np.array([
         request.distance_from_home,
@@ -56,41 +51,30 @@ async def predict(request: PredictionRequest):
         request.online_order
     ]).reshape(1, -1)
 
-    # Step 1: Apply the scaler
-    start_time = time.time()
+    # Apply the scaler
     input_data_scaled = scaler.transform(input_data)
-    print(f"Time for scaling: {time.time() - start_time} seconds")
 
-    # Step 2: Encrypt the data
-    start_time = time.time()
+    # Encrypt the data
     encrypted_data = client.quantize_encrypt_serialize(input_data_scaled)
-    print(f"Time for encryption: {time.time() - start_time} seconds")
 
-    # Step 3: Send encrypted data to the server for prediction
-    start_time = time.time()
+    # Send encrypted data to the server for prediction
     response = requests.post(
         'http://127.0.0.1:8000/predict',
         json={'data': encrypted_data.hex()}
     )
-    print(f"Time for server prediction request: {time.time() - start_time} seconds")
-
-    # Step 4: Decrypt the result
-    start_time = time.time()
     encrypted_prediction = bytes.fromhex(response.json()['prediction'])
-    prediction = client.deserialize_decrypt_dequantize(encrypted_prediction)
-    print(f"Time for decryption: {time.time() - start_time} seconds")
 
+    # Decrypt the result
+    prediction = client.deserialize_decrypt_dequantize(encrypted_prediction)
+    
     # Extract the scalar value
     prediction_value = prediction[0]
     print(f"Type of prediction_value: {type(prediction_value)}")
     print(f"Value of prediction_value: {prediction_value}")
-
+    
     # If the array contains two elements, choose the highest value
     binary_prediction = int(np.argmax(prediction_value))
-
-    # Total time measurement
-    print(f"Total time for prediction: {time.time() - total_start_time} seconds")
-
+    
     return {'prediction': binary_prediction}
 
 
