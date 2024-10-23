@@ -16,7 +16,7 @@ jobs:
       - name: Set commit message
         run: |
           # Gets the latest commit message and replaces newlines with spaces
-          COMMIT_MSG=$(git log -1 --pretty=%B | tr '\n' ' ')
+          COMMIT_MSG=$(git log -1 --pretty=%s)
           echo "commit_message=${COMMIT_MSG}" >> $GITHUB_ENV
 
       - name: Debug commit message
