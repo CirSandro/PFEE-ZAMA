@@ -33,13 +33,13 @@ def preprocess_data(df):
     X_val_scaled = scaler.transform(X_val)
     X_test_scaled = scaler.transform(X_test)
 
-    # Sauvegarder les ensembles de données prétraités
+    # save the preprocessed data
     joblib.dump((X_train_scaled, X_val_scaled, X_test_scaled, y_train, y_val, y_test), 'library/data/processed_data.pkl')
 
     return X_train_scaled, X_val_scaled, X_test_scaled, y_train, y_val, y_test
 
 def main():
-    # Chargement et prétraitement des données
+    # load the proprecessed data
     data_path= "library/data/card_transdata.csv"
     data = load_data(data_path)
     preprocess_data(data)

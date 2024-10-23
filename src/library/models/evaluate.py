@@ -46,10 +46,10 @@ import joblib
 
 def main():
     X_train, X_val, X_test, y_train, y_val, y_test = joblib.load('library/data/processed_data.pkl')
-    # charger les modèles entrainés et les temps d'entrainement
+    # load models and training times
     trained_models, training_times = joblib.load('trained_and_times_models.pkl')
     results = evaluate_models(trained_models, X_train, y_train, X_val, y_val, training_times)
-    # stocker les résultats dans un fichier csv
+    # save results on a csv file
     df = pd.DataFrame(results)
     df.to_csv('results.csv', index=False)
 

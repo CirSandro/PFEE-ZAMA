@@ -33,7 +33,7 @@ def main():
     models = get_models()
     X_train, X_val, X_test, y_train, y_val, y_test = joblib.load('library/data/processed_data.pkl')
     trained_models, training_times = train_models(models, X_train, y_train)
-    # stoquer les modèles entrainés et les temps d'entrainement
+    # load models and training times
     joblib.dump((trained_models, training_times), 'trained_and_times_models.pkl')
 
 if __name__ == '__main__':
