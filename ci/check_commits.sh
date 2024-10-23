@@ -2,7 +2,7 @@
 
 # Commit message pattern 
 COMMIT_MSG_REGEX="^ ?(feat|fix|docs|style|refactor|test|chore): .+"
-
+ 
 commit_message="$1"
 
 # Accept automatically if the commit message contains "Merge"
