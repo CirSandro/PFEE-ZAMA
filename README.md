@@ -71,8 +71,8 @@ Before deploying PFEE-ZAMA, ensure that you have the following installed on your
 1. **Clone the Repository**
 
    ```sh
-   git clone https://github.com/yourusername/pfee-zama.git
-   cd pfee-zama
+   git clone git@github.com:CirSandro/PFEE-ZAMA.git
+   cd PFEE-ZAMA
    ```
 
 2. **Install Dependencies**
