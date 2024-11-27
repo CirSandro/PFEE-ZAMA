@@ -12,3 +12,5 @@ joblib
 scikit-learn
 pytest
 httpx
+jupyter
+nbconvert
