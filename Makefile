@@ -1,7 +1,7 @@
 .PHONY: requirements train run_server run_client test
 
 train:
-	python models/fhe_model.py
+	python3 models/fhe_model.py
 
 run_server:
 	uvicorn src.server.server:app --host 0.0.0.0 --port 8000
@@ -64,5 +64,5 @@ setup-dataset: download-dataset unzip-dataset
 
 # # Catch-all target: route all unknown targets to Sphinx using the new
 # # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+# %: Makfile
+# 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
