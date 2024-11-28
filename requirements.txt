@@ -13,3 +13,6 @@ scikit-learn
 pytest
 httpx
 pydantic
+flake8
+black
+pylint
