@@ -48,3 +48,5 @@ downloads/
 .pkl
 
 dataset
+models/*.pkl
+models/fhe_files

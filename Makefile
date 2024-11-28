@@ -1,5 +1,7 @@
 .PHONY: requirements train run_server run_client test
 
+PYTHON := $(shell which python3 || which python)
+
 train:
 	python3 models/fhe_model.py
 
