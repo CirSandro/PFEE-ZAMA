@@ -1,8 +1,12 @@
+"""
+Client module for FHE-based prediction system.
+"""
+
+import os
 import requests
 import numpy as np
-import os
-from concrete.ml.deployment import FHEModelClient
 import joblib
+from concrete.ml.deployment import FHEModelClient
 from pydantic import BaseModel
 from fastapi import FastAPI
 import uvicorn
@@ -19,21 +23,29 @@ client = FHEModelClient(path_dir=fhe_directory, key_dir=fhe_directory)
 serialized_evaluation_keys = client.get_serialized_evaluation_keys()
 
 
-# Send evaluation keys to the server (only once)
 def send_evaluation_keys():
+    """
+    Sends the FHE evaluation keys to the server.
+    """
     requests.post(
         'http://127.0.0.1:8000/evaluation_keys',
-        json={'keys': serialized_evaluation_keys.hex()}
+        json={'keys': serialized_evaluation_keys.hex()},
+        timeout=500
     )
 
 
-# Send the keys on application startup
 @app.on_event("startup")
 async def startup_event():
+    """
+    Event triggered on application startup to send evaluation keys to the server.
+    """
     send_evaluation_keys()
 
 
 class PredictionRequest(BaseModel):
+    """
+    Pydantic model for validating prediction request inputs.
+    """
     distance_from_home: float
     distance_from_last_transaction: float
     ratio_to_median_purchase_price: float
@@ -45,6 +57,12 @@ class PredictionRequest(BaseModel):
 
 @app.post('/predict')
 async def predict(request: PredictionRequest):
+    """
+    Endpoint to handle prediction requests.
+    
+    :param request: Input data for prediction wrapped in a PredictionRequest object.
+    :return: A dictionary containing the binary prediction result.
+    """
     # Retrieve user-input data
     input_data = np.array([
         request.distance_from_home,
@@ -65,7 +83,8 @@ async def predict(request: PredictionRequest):
     # Send encrypted data to the server for prediction
     response = requests.post(
         'http://127.0.0.1:8000/predict',
-        json={'data': encrypted_data.hex()}
+        json={'data': encrypted_data.hex()},
+        timeout=500
     )
     encrypted_prediction = bytes.fromhex(response.json()['prediction'])
 
