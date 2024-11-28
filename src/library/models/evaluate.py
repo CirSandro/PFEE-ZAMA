@@ -17,7 +17,7 @@ def evaluate_models(models, datasets, training_times):
     Args:
         models (dict): Dictionary containing Sklearn and FHE models.
         datasets (dict): Dictionary with training and validation datasets.
-        training_times (dict): Dictionary with training times for Sklearn models.
+        training_times (dict): Training times for Sklearn models.
 
     Returns:
         list: A list of dictionaries containing evaluation results.
@@ -45,7 +45,8 @@ def evaluate_models(models, datasets, training_times):
         # Calculate ratios
         obj["Sklearn Time"] = training_times[model_name]
         obj["Time Ratio (FHE/Sklearn)"] = obj["FHE Time"] / obj["Sklearn Time"]
-        obj["Accuracy Ratio (FHE/Sklearn)"] = obj["FHE Accuracy"] / obj["Sklearn Accuracy"]
+        obj["Accuracy Ratio (FHE/Sklearn)"] = \
+        obj["FHE Accuracy"] / obj["Sklearn Accuracy"]
 
         # Store results
         results.append(obj)
@@ -58,7 +59,9 @@ def main():
     Main function to load data, evaluate models, and save results.
     """
     # Load data and models
-    x_train, x_val, _, y_train, y_val, _ = joblib.load('library/data/processed_data.pkl')
+    x_train, x_val, _, y_train, y_val, _ = \
+    joblib.load('library/data/processed_data.pkl')
+
     datasets = {
         "x_train": x_train,
         "x_val": x_val,
@@ -66,7 +69,8 @@ def main():
         "y_val": y_val
     }
 
-    trained_models, training_times = joblib.load('trained_and_times_models.pkl')
+    trained_models, training_times = \
+    joblib.load('trained_and_times_models.pkl')
 
     # Evaluate models
     results = evaluate_models(trained_models, datasets, training_times)

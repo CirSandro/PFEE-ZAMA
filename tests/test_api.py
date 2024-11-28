@@ -17,7 +17,8 @@ CLIENT_URL = "http://127.0.0.1:8001/predict"
 
 def preprocess_data(df):
     """
-    Preprocesses the dataset by removing missing values and handling class imbalance.
+    Preprocesses the dataset by removing missing values 
+    and handling class imbalance.
     """
     # Remove missing values
     df = df.dropna()
@@ -30,7 +31,8 @@ def preprocess_data(df):
 
 def split_data(df):
     """
-    Splits the dataset into features and target, and then into training and test sets.
+    Splits the dataset into features and target, 
+    and then into training and test sets.
     """
     # Split features and target
     x = df.drop(columns=["fraud"])
@@ -43,7 +45,8 @@ def split_data(df):
 @pytest.fixture(scope="module")
 def test_data():
     """
-    Loads the dataset, performs preprocessing, and returns 10 test samples with their labels.
+    Loads the dataset, performs preprocessing, 
+    and returns 10 test samples with their labels.
     """
     # Path to the dataset
     data_path = os.path.join(
@@ -64,7 +67,6 @@ def test_data():
     y_sample = y_test.loc[x_sample.index].values
 
     # Apply the scaler
-    # scaler_path = os.path.join(os.path.abspath(os.getcwd()), "models", "scaler.pkl")
     scaler = StandardScaler()
     scaler.fit(x_train)  # Train the scaler on the training set
     x_scaled = scaler.transform(x_sample)

@@ -1,5 +1,6 @@
 """
-Module for training and deploying an FHE-enabled Random Forest model using Concrete ML.
+Module for training and deploying an FHE-enabled 
+Random Forest model using Concrete ML.
 """
 
 import os
@@ -11,7 +12,8 @@ from concrete.ml.sklearn.rf import RandomForestClassifier
 from concrete.ml.deployment import FHEModelDev
 
 # Load the data (100,000 rows only)
-DATA_PATH = os.path.join(os.path.abspath(os.getcwd()), 'dataset', 'card_transdata.csv')
+DATA_PATH = os.path.join(os.path.abspath(os.getcwd()), 
+                         'dataset', 'card_transdata.csv')
 df = pd.read_csv(DATA_PATH, nrows=100000)  # Limit to 100,000 rows
 
 # Check for missing values
@@ -38,7 +40,8 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
 
 # Save the scaler for later use
-SCALER_PATH = os.path.join(os.path.abspath(os.getcwd()), 'models', 'scaler.pkl')
+SCALER_PATH = os.path.join(os.path.abspath(os.getcwd()), 
+                           'models', 'scaler.pkl')
 joblib.dump(scaler, SCALER_PATH)
 
 # Train the Random Forest model with Concrete ML
@@ -49,7 +52,8 @@ model.fit(X_train_scaled, y_train)
 model.compile(X_train_scaled)
 
 # Save the model and necessary files for client and server
-FHE_DIRECTORY = os.path.join(os.path.abspath(os.getcwd()), 'models', 'fhe_files')
+FHE_DIRECTORY = os.path.join(os.path.abspath(os.getcwd()), 
+                             'models', 'fhe_files')
 dev = FHEModelDev(path_dir=FHE_DIRECTORY, model=model)
 dev.save()
 

@@ -12,7 +12,8 @@ import uvicorn
 app = FastAPI()
 
 # Load the FHE model
-fhe_directory = os.path.join(os.path.abspath(os.getcwd()), "models", "fhe_files")
+fhe_directory = os.path.join(os.path.abspath(os.getcwd()), 
+                             "models", "fhe_files")
 server = FHEModelServer(path_dir=fhe_directory)
 server.load()
 
@@ -55,16 +56,12 @@ async def receive_evaluation_keys(request: EvaluationKeysRequest):
     Evaluation_keys endpoint: receives the serialized evaluation keys.
 
     Args:
-        request (EvaluationKeysRequest): Serialized evaluation keys in hex-encoded string format.
+        request (EvaluationKeysRequest): Serialized evaluation keys 
+        in hex-encoded string format.
 
     Returns:
         dict: Status message.
     """
-    # global evaluation_keys
-    # evaluation_keys = bytes.fromhex(request.keys)
-    # with open(os.path.join(fhe_directory, 'serialized_evaluation_keys.ekl'), 'wb') as f:
-    #     f.write(EVALUATION_KEYS)
-    # return {'status': 'Keys received'}
     app.state.evaluation_keys = bytes.fromhex(request.keys)
     with open(
         os.path.join(fhe_directory, "serialized_evaluation_keys.ekl"), "wb"

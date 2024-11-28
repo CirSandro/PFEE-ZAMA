@@ -7,7 +7,8 @@ import os
 import sys
 import joblib
 
-from library.models.model_comparaison import get_models  # pylint: disable=import-error
+from library.models.model_comparaison \
+    import get_models  # pylint: disable=import-error
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -39,10 +40,12 @@ def main():
     Main function to train models.
     """
     models = get_models()
-    x_train, _, _, y_train, _, _ = joblib.load("library/data/processed_data.pkl")
+    x_train, _, _, y_train, _, _ = \
+        joblib.load("library/data/processed_data.pkl")
     trained_models, training_times = train_models(models, x_train, y_train)
     # load models and training times
-    joblib.dump((trained_models, training_times), "trained_and_times_models.pkl")
+    joblib.dump((trained_models, training_times), 
+                "trained_and_times_models.pkl")
 
 
 if __name__ == "__main__":
