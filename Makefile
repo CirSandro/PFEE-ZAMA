@@ -1,7 +1,9 @@
 .PHONY: requirements train run_server run_client test
 
+PYTHON := $(shell which python3 || which python)
+
 train:
-	python models/FHEModel.py
+	$(PYTHON) models/FHEModel.py
 
 run_server:
 	uvicorn src.server.server:app --host 0.0.0.0 --port 8000
