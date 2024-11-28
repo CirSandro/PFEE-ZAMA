@@ -10,15 +10,21 @@ from concrete.ml.sklearn.svm import LinearSVC
 from concrete.ml.sklearn.tree import DecisionTreeClassifier
 from concrete.ml.sklearn.xgb import XGBClassifier
 
+
 def get_models():
     """
     Return a dictionary of Sklearn and FHE models to compare.
     """
     models = {
-        "Random Forest": (SkRandomForestClassifier(n_estimators=100, random_state=42), RandomForestClassifier(n_estimators=100, random_state=42)),
-        "Logistic Regression": (SkLogisticRegression(max_iter=1000, random_state=42), LogisticRegression(max_iter=1000, random_state=42)),
-        "Decision Tree": (SkDecisionTreeClassifier(random_state=42), DecisionTreeClassifier(random_state=42)),
-        "Linear SVC": (SkLinearSVC(random_state=42, max_iter=10000), LinearSVC(random_state=42, max_iter=10000)),
-        "XGBoost Classifier": (SkXGBClassifier(random_state=42, use_label_encoder=False), XGBClassifier(random_state=42, use_label_encoder=False))
+        "Random Forest": (SkRandomForestClassifier(n_estimators=100, random_state=42),
+                          RandomForestClassifier(n_estimators=100, random_state=42)),
+        "Logistic Regression": (SkLogisticRegression(max_iter=1000, random_state=42),
+                                LogisticRegression(max_iter=1000, random_state=42)),
+        "Decision Tree": (SkDecisionTreeClassifier(random_state=42),
+                          DecisionTreeClassifier(random_state=42)),
+        "Linear SVC": (SkLinearSVC(random_state=42, max_iter=10000),
+                       LinearSVC(random_state=42, max_iter=10000)),
+        "XGBoost Classifier": (SkXGBClassifier(random_state=42, use_label_encoder=False),
+                               XGBClassifier(random_state=42, use_label_encoder=False))
     }
     return models

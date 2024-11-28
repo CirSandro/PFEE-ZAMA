@@ -4,7 +4,7 @@ import os
 from concrete.ml.deployment import FHEModelClient
 import joblib
 from pydantic import BaseModel
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
 import uvicorn
 
 app = FastAPI()
@@ -18,6 +18,7 @@ fhe_directory = os.path.join(os.path.abspath(os.getcwd()), 'models', 'fhe_files'
 client = FHEModelClient(path_dir=fhe_directory, key_dir=fhe_directory)
 serialized_evaluation_keys = client.get_serialized_evaluation_keys()
 
+
 # Send evaluation keys to the server (only once)
 def send_evaluation_keys():
     requests.post(
@@ -25,10 +26,12 @@ def send_evaluation_keys():
         json={'keys': serialized_evaluation_keys.hex()}
     )
 
+
 # Send the keys on application startup
 @app.on_event("startup")
 async def startup_event():
     send_evaluation_keys()
+
 
 class PredictionRequest(BaseModel):
     distance_from_home: float
@@ -38,6 +41,8 @@ class PredictionRequest(BaseModel):
     used_chip: int
     used_pin_number: int
     online_order: int
+
+
 @app.post('/predict')
 async def predict(request: PredictionRequest):
     # Retrieve user-input data
@@ -66,15 +71,15 @@ async def predict(request: PredictionRequest):
 
     # Decrypt the result
     prediction = client.deserialize_decrypt_dequantize(encrypted_prediction)
-    
+
     # Extract the scalar value
     prediction_value = prediction[0]
     print(f"Type of prediction_value: {type(prediction_value)}")
     print(f"Value of prediction_value: {prediction_value}")
-    
+
     # If the array contains two elements, choose the highest value
     binary_prediction = int(np.argmax(prediction_value))
-    
+
     return {'prediction': binary_prediction}
 
 

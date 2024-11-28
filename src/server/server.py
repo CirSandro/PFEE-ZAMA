@@ -13,11 +13,14 @@ server.load()
 
 evaluation_keys = None
 
+
 class PredictRequest(BaseModel):
     data: str
 
+
 class EvaluationKeysRequest(BaseModel):
     keys: str
+
 
 @app.post('/predict')
 async def predict(request: PredictRequest):
@@ -26,6 +29,7 @@ async def predict(request: PredictRequest):
     encrypted_result = server.run(encrypted_data, serialized_evaluation_keys=evaluation_keys)
     return {'prediction': encrypted_result.hex()}
 
+
 @app.post('/evaluation_keys')
 async def receive_evaluation_keys(request: EvaluationKeysRequest):
     global evaluation_keys
@@ -33,6 +37,7 @@ async def receive_evaluation_keys(request: EvaluationKeysRequest):
     with open(os.path.join(fhe_directory, 'serialized_evaluation_keys.ekl'), 'wb') as f:
         f.write(evaluation_keys)
     return {'status': 'Keys received'}
+
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)

@@ -1,15 +1,16 @@
 from sklearn.metrics import accuracy_score
-# from . import evaluate_models
-from library.models import get_models
 import pandas as pd
 import time
+import joblib
+
+
 def evaluate_models(models, X_train, y_train, X_val, y_val, training_times):
     """
     Evaluate trained models and compare performance.
     """
     y_val = y_val.astype(int)
     y_train = y_train.astype(int)
-    
+
     results = []
     for model_name, (sk_model, fhe_model) in models.items():
         # Predict with Sklearn model
@@ -25,7 +26,7 @@ def evaluate_models(models, X_train, y_train, X_val, y_val, training_times):
         fhe_accuracy = accuracy_score(y_val, fhe_y_pred)
 
         # Calculate ratios
-        sk_training_time= training_times[model_name] #, fhe_training_time 
+        sk_training_time = training_times[model_name]
         time_ratio = fhe_training_time / sk_training_time
         accuracy_ratio = fhe_accuracy / sk_accuracy
 
@@ -42,7 +43,6 @@ def evaluate_models(models, X_train, y_train, X_val, y_val, training_times):
 
     return results
 
-import joblib
 
 def main():
     X_train, X_val, X_test, y_train, y_val, y_test = joblib.load('library/data/processed_data.pkl')
@@ -52,6 +52,7 @@ def main():
     # save results on a csv file
     df = pd.DataFrame(results)
     df.to_csv('results.csv', index=False)
+
 
 if __name__ == "__main__":
     main()

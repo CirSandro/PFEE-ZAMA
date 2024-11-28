@@ -1,5 +1,5 @@
 from .preprocessing import data_preprocessing
-from .models import train, evaluate
+
 
 # Chargement et prétraitement des données
 def load_and_preprocess_data(data_path):
