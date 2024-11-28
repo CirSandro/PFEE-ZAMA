@@ -15,9 +15,9 @@ sys.path.insert(0, os.path.abspath("../src"))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-PROJECT = "PFEE-ZAMA"  # UPERCASE
-COPYRIGHT = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  # UPERCASE
-AUTHOR = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  # UPERCASE
+project = "PFEE-ZAMA"  
+copyright = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  
+author = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -26,6 +26,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx.ext.intersphinx",
 ]
 
 templates_path = ["_templates"]
@@ -35,5 +36,7 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-HTML_THEME = "alabaster"  # UPERCASE
+html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+
+autodoc_typehints = "description"
