@@ -46,7 +46,7 @@ def evaluate_models(models, datasets, training_times):
         obj["Sklearn Time"] = training_times[model_name]
         obj["Time Ratio (FHE/Sklearn)"] = obj["FHE Time"] / obj["Sklearn Time"]
         obj["Accuracy Ratio (FHE/Sklearn)"] = \
-        obj["FHE Accuracy"] / obj["Sklearn Accuracy"]
+            obj["FHE Accuracy"] / obj["Sklearn Accuracy"]
 
         # Store results
         results.append(obj)
@@ -60,7 +60,7 @@ def main():
     """
     # Load data and models
     x_train, x_val, _, y_train, y_val, _ = \
-    joblib.load('library/data/processed_data.pkl')
+        joblib.load('library/data/processed_data.pkl')
 
     datasets = {
         "x_train": x_train,
@@ -70,7 +70,7 @@ def main():
     }
 
     trained_models, training_times = \
-    joblib.load('trained_and_times_models.pkl')
+        joblib.load('trained_and_times_models.pkl')
 
     # Evaluate models
     results = evaluate_models(trained_models, datasets, training_times)

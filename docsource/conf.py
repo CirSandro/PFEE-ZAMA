@@ -15,9 +15,9 @@ sys.path.insert(0, os.path.abspath("../src"))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "PFEE-ZAMA"  
-copyright = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  
-author = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  
+project = "PFEE-ZAMA"
+copyright = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"
+author = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

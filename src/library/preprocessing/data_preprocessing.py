@@ -42,8 +42,8 @@ def preprocess_data(dataframe):
     # Split into training, validation, and test sets
     train_features, test_features, train_target, test_target = \
         train_test_split(
-        features, target, test_size=0.2, random_state=42, stratify=target
-    )
+            features, target, test_size=0.2, random_state=42, stratify=target
+        )
     train_features, val_features, train_target, val_target = train_test_split(
         train_features,
         train_target,

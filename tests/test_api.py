@@ -17,7 +17,7 @@ CLIENT_URL = "http://127.0.0.1:8001/predict"
 
 def preprocess_data(df):
     """
-    Preprocesses the dataset by removing missing values 
+    Preprocesses the dataset by removing missing values
     and handling class imbalance.
     """
     # Remove missing values
@@ -31,7 +31,7 @@ def preprocess_data(df):
 
 def split_data(df):
     """
-    Splits the dataset into features and target, 
+    Splits the dataset into features and target,
     and then into training and test sets.
     """
     # Split features and target
@@ -45,7 +45,7 @@ def split_data(df):
 @pytest.fixture(scope="module")
 def test_data():
     """
-    Loads the dataset, performs preprocessing, 
+    Loads the dataset, performs preprocessing,
     and returns 10 test samples with their labels.
     """
     # Path to the dataset

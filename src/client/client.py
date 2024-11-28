@@ -14,13 +14,11 @@ import uvicorn
 app = FastAPI()
 
 # Load the scaler
-scaler_path = os.path.join(os.path.abspath(os.getcwd()), 
-                           "models", "scaler.pkl")
+scaler_path = os.path.join(os.path.abspath(os.getcwd()), "models", "scaler.pkl")
 scaler = joblib.load(scaler_path)
 
 # Initialize the FHE client (only once)
-fhe_directory = os.path.join(os.path.abspath(os.getcwd()), 
-                             "models", "fhe_files")
+fhe_directory = os.path.join(os.path.abspath(os.getcwd()), "models", "fhe_files")
 client = FHEModelClient(path_dir=fhe_directory, key_dir=fhe_directory)
 serialized_evaluation_keys = client.get_serialized_evaluation_keys()
 
@@ -39,7 +37,7 @@ def send_evaluation_keys():
 @app.on_event("startup")
 async def startup_event():
     """
-    Event triggered on application startup 
+    Event triggered on application startup
     to send evaluation keys to the server.
     """
     send_evaluation_keys()
@@ -65,7 +63,7 @@ async def predict(request: PredictionRequest):
     Endpoint to handle prediction requests.
 
     :param
-        request: Input data for prediction 
+        request: Input data for prediction
         wrapped in a PredictionRequest object.
     :return: A dictionary containing the binary prediction result.
     """
