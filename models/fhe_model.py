@@ -1,6 +1,9 @@
+"""
+Module for training and deploying an FHE-enabled Random Forest model using Concrete ML.
+"""
+
 import os
 import pandas as pd
-import numpy as np
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -35,8 +38,8 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
 
 # Save the scaler for later use
-scaler_path = os.path.join(os.path.abspath(os.getcwd()), 'models', 'scaler.pkl')
-joblib.dump(scaler, scaler_path)
+SCALER_PATH = os.path.join(os.path.abspath(os.getcwd()), 'models', 'scaler.pkl')
+joblib.dump(scaler, SCALER_PATH)
 
 # Train the Random Forest model with Concrete ML
 model = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -46,8 +49,8 @@ model.fit(X_train_scaled, y_train)
 model.compile(X_train_scaled)
 
 # Save the model and necessary files for client and server
-fhe_directory = os.path.join(os.path.abspath(os.getcwd()), 'models', 'fhe_files')
-dev = FHEModelDev(path_dir=fhe_directory, model=model)
+FHE_DIRECTORY = os.path.join(os.path.abspath(os.getcwd()), 'models', 'fhe_files')
+dev = FHEModelDev(path_dir=FHE_DIRECTORY, model=model)
 dev.save()
 
 print("Model trained, compiled, and saved.")

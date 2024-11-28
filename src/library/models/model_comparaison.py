@@ -1,3 +1,7 @@
+"""
+This module contains the models to compare between Sklearn and FHE.
+"""
+
 from sklearn.ensemble import RandomForestClassifier as SkRandomForestClassifier
 from sklearn.linear_model import LogisticRegression as SkLogisticRegression
 from sklearn.svm import LinearSVC as SkLinearSVC

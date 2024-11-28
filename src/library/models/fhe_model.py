@@ -7,11 +7,12 @@ import sys
 import time
 import joblib
 from concrete.ml.deployment import FHEModelDev
-from library.models.model_comparaison import get_models # pylint: disable=import-error
+from library.models.model_comparaison import get_models  # pylint: disable=import-error
 
 
 # Adjust path to include the library directory
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 def train_fhe_models(models, x_train, y_train):
     """
@@ -56,10 +57,10 @@ def main():
     Main function to train FHE models and print training times.
     """
     models = get_models()
-    x_train, _, _, y_train, _, _ = joblib.load('library/data/processed_data.pkl')
+    x_train, _, _, y_train, _, _ = joblib.load("library/data/processed_data.pkl")
     training_times = train_fhe_models(models, x_train, y_train)
     print(training_times)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

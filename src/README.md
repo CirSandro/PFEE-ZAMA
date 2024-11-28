@@ -30,7 +30,7 @@ The `model_comparaison.py` file compares the performance of trained models.
 The `evaluate.py` file evaluates models on test datasets.
 
 ### 5. FHE Model
-The `FHEModel.py` file allows training an encrypted model for secure deployment.
+The `fhe_model.py` file allows training an encrypted model for secure deployment.
 
 ---
 

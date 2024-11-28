@@ -12,3 +12,4 @@ joblib
 scikit-learn
 pytest
 httpx
+pydantic
