@@ -5,8 +5,8 @@ kaggle
 pandas
 sphinx
 sphinx_rtd_theme
-xgboost
-fastapi.github 
+xgboost>=2.0.0  # Specify the correct version
+fastapi
 uvicorn
 joblib
 scikit-learn
