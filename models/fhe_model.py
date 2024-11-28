@@ -1,5 +1,5 @@
 """
-Module for training and deploying an FHE-enabled 
+Module for training and deploying an FHE-enabled
 Random Forest model using Concrete ML.
 """
 

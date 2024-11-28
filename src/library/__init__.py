@@ -1,5 +1,5 @@
 """
-Module to initialize the package 
+Module to initialize the package
 and load preprocessed data for training models.
 """
 
