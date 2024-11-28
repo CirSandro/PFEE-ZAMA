@@ -27,6 +27,9 @@ jobs:
         run: |
           ./ci/check_commits.sh "$commit_message"
 
+      - name: Run Linting
+        run: |
+          ./ci/lint.sh
   # build-documentation:
   #   runs-on: ubuntu-latest
   #   steps:
