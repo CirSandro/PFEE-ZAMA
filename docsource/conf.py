@@ -15,9 +15,9 @@ sys.path.insert(0, os.path.abspath("../src"))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-PROJECT = "PFEE-ZAMA" # UPERCASE
-COPYRIGHT = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI" # UPERCASE
-AUTHOR = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI" # UPERCASE
+PROJECT = "PFEE-ZAMA"  # UPERCASE
+COPYRIGHT = "2024, CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  # UPERCASE
+AUTHOR = "CARDI-FERRONI-GIRAUD-HOLARD-MOYO-SKALLI"  # UPERCASE
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -35,5 +35,5 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-HTML_THEME = "alabaster" # UPERCASE
+HTML_THEME = "alabaster"  # UPERCASE
 html_static_path = ["_static"]

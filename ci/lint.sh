@@ -2,7 +2,7 @@
 
 # Run Flake8
 echo "Running Flake8..."
-flake8 src/
+flake8 .
 
 if [ $? -ne 0 ]; then
   echo "Flake8 found issues."
@@ -11,7 +11,7 @@ fi
 
 # Run Pylint
 echo "Running Pylint..."
-pylint src/
+pylint .
 
 if [ $? -ne 0 ]; then
   echo "Pylint found issues."

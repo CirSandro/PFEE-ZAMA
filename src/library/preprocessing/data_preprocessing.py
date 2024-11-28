@@ -15,11 +15,10 @@ def load_data(path):
     return pd.read_csv(path)
 
 
-def preprocess_data(dataframe):
+def split_data(dataframe):
     """
     Balance the dataset to have equal numbers of fraud and non-fraud cases.
-    Split the dataset into training, validation, and test sets.
-    Scale the features using StandardScaler.
+    Split the dataset into features and target.
     """
     fraud = dataframe[dataframe["fraud"] == 1]
     non_fraud = dataframe[dataframe["fraud"] == 0].sample(n=len(fraud), random_state=42)
@@ -27,6 +26,17 @@ def preprocess_data(dataframe):
 
     features = balanced_df.drop(columns=["fraud"])
     target = balanced_df["fraud"]
+    return features, target
+
+
+def preprocess_data(dataframe):
+    """
+    Balance the dataset to have equal numbers of fraud and non-fraud cases.
+    Split the dataset into training, validation, and test sets.
+    Scale the features using StandardScaler.
+    """
+
+    features, target = split_data(dataframe)
 
     # Split into training, validation, and test sets
     train_features, test_features, train_target, test_target = train_test_split(
