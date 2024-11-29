@@ -26,7 +26,7 @@ compare_evaluate: train
 
 train_fhe: preprocess
 	@echo "Train Random Forest model in FHE for deployment ..."
-	$(PYTHON) $(MODELS)/FHEModel.py
+	$(PYTHON) $(MODELS)/fhe_model.py
 
 clean:
 	find . -name "*.pyc" -exec rm -f {} \;
