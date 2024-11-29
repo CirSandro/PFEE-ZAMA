@@ -5,7 +5,6 @@ kaggle
 pandas
 sphinx
 sphinx_rtd_theme
-xgboost
 fastapi
 uvicorn
 joblib
@@ -14,3 +13,8 @@ pytest
 httpx
 jupyter
 nbconvert
+pydantic
+flake8
+black
+pylint
+xgboost==1.6.2
