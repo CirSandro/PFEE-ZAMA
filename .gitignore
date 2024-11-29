@@ -47,7 +47,9 @@ downloads/
 # model
 .pkl
 
+# Model files
 dataset
+src/fhe_file
 models/*.pkl
 models/fhe_files
 src/*.pkl

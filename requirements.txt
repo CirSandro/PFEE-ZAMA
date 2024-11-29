@@ -11,6 +11,8 @@ joblib
 scikit-learn
 pytest
 httpx
+jupyter
+nbconvert
 pydantic
 flake8
 black
