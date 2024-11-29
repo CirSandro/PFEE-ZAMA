@@ -71,8 +71,8 @@ Before deploying PFEE-ZAMA, ensure that you have the following installed on your
 1. **Clone the Repository**
 
    ```sh
-   git clone https://github.com/yourusername/pfee-zama.git
-   cd pfee-zama
+   git clone git@github.com:CirSandro/PFEE-ZAMA.git
+   cd PFEE-ZAMA
    ```
 
 2. **Install Dependencies**
@@ -80,10 +80,12 @@ Before deploying PFEE-ZAMA, ensure that you have the following installed on your
    Use the provided Makefile to install all necessary dependencies.
 
    ```sh
-   make setup
+   make all
    ```
 
-   This command will install all packages listed in `requirements.txt` using `pip`.
+   This command will install all packages listed in `requirements.txt` using `pip` and download the dataset.
+
+
 
 ### Training the Model
 
@@ -155,7 +157,7 @@ The Makefile simplifies common tasks such as setting up the environment, trainin
 - **Setup Dependencies**
 
   ```sh
-  make setup
+  make all
   ```
 
   Installs all required Python packages listed in `requirements.txt`.
@@ -174,7 +176,7 @@ The Makefile simplifies common tasks such as setting up the environment, trainin
   make run_server
   ```
 
-  Starts the FastAPI server on `http://0.0.0.0:8000`.
+  Starts the FastAPI server on `http://0.0.0.0:8000`. You can have the interface at `http://0.0.0.0:8000/docs`.
 
 - **Run the Client**
 
@@ -182,7 +184,7 @@ The Makefile simplifies common tasks such as setting up the environment, trainin
   make run_client
   ```
 
-  Starts the FastAPI client on `http://127.0.0.1:8001`.
+  Starts the FastAPI client on `http://127.0.0.1:8001`. You can have the interface at `http://127.0.0.1:8001/docs`.
 
 - **Run Tests**
 

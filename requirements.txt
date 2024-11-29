@@ -6,7 +6,7 @@ pandas
 sphinx
 sphinx_rtd_theme
 xgboost
-fastapi.github 
+fastapi
 uvicorn
 joblib
 scikit-learn
