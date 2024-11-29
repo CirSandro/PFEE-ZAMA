@@ -50,3 +50,4 @@ downloads/
 dataset
 models/*.pkl
 models/fhe_files
+src/*.pkl
