@@ -69,9 +69,10 @@ jobs:
           set -e  # Make sure that the script fails on the first error
           # Run all notebooks to verify they are working
           for notebook in $(find . -name "*.ipynb"); do
-            jupyter nbconvert --to notebook --execute --inplace "$notebook" || exit 1
+            echo "Executing $notebook"
+            jupyter nbconvert --to notebook --execute --inplace "$notebook"
           done
-
+          
   # build-documentation:
   #   runs-on: ubuntu-latest
   #   steps:
