@@ -66,12 +66,16 @@ jobs:
       # Run notebook tests
       - name: Test Jupyter notebooks
         run: |
+          echo "Detected notebooks:"
+          find . -name "*.ipynb"
           set -e  # Make sure that the script fails on the first error
+          echo "Testing Jupyter notebooks"
           # Run all notebooks to verify they are working
           for notebook in $(find . -name "*.ipynb"); do
             echo "Executing $notebook"
-            jupyter nbconvert --to notebook --execute --inplace "$notebook"
+            jupyter nbconvert --to notebook --execute --ExecutePreprocessor.allow_errors=False --inplace "$notebook"
           done
+          pytest --nbmake
           
   # build-documentation:
   #   runs-on: ubuntu-latest
