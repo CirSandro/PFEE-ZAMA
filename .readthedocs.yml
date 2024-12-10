@@ -1,0 +1,11 @@
+version: 2
+
+project: "PFEE-ZAMA"
+
+python:
+  version: 3.10
+  install:
+    - requirements: requirements.txt
+
+sphinx:
+  configuration: docsource/conf.py
