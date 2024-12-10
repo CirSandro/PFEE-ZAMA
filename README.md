@@ -278,3 +278,4 @@ This setup ensures that you can deploy the PFEE-ZAMA system efficiently and star
 ---
 
 For more detailed documentation, refer to the [PFEE-ZAMA Documentation](./docsource/index.rst).
+[![Documentation Status](https://readthedocs.org/projects/pfee-zama/badge/?version=latest)](https://pfee-zama.readthedocs.io/en/latest/)
