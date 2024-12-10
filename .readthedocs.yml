@@ -1,7 +1,5 @@
 version: 2
 
-project: "pfee-zama"
-
 build:
   os: ubuntu-22.04
   tools:
