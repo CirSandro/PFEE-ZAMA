@@ -1,6 +1,6 @@
 version: 2
 
-project: "PFEE-ZAMA"
+project: "pfee-zama"
 
 build:
   os: ubuntu-22.04
