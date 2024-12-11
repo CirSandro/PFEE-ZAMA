@@ -1,6 +1,4 @@
-"""
-This module contains tests for the client API.
-"""
+"""This module contains tests for the client API."""
 
 import os
 import pytest
@@ -74,11 +72,11 @@ def data_samples_fixture():
     return x_scaled, y_sample
 
 
-def test_api_accuracy(data_samples_fixture):
+def test_api_accuracy(samples):
     """
     Sends 100 predictions via the client API and checks the accuracy.
     """
-    x_scaled, y_true = data_samples_fixture
+    x_scaled, y_true = samples
     predictions = []
 
     for _, sample in enumerate(x_scaled):
