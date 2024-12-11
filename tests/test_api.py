@@ -43,7 +43,7 @@ def split_data(df):
 
 
 @pytest.fixture(scope="module")
-def data_samples():
+def data_samples_fixture():
     """
     Loads the dataset, performs preprocessing,
     and returns 100 test samples with their labels.
@@ -74,11 +74,11 @@ def data_samples():
     return x_scaled, y_sample
 
 
-def test_api_accuracy(data_samples):
+def test_api_accuracy(data_samples_fixture):
     """
     Sends 100 predictions via the client API and checks the accuracy.
     """
-    x_scaled, y_true = data_samples
+    x_scaled, y_true = data_samples_fixture
     predictions = []
 
     for _, sample in enumerate(x_scaled):
