@@ -32,7 +32,7 @@ jobs:
 
   commit-message:
     runs-on: ubuntu-latest
-    needs: lint  # Ce job se lance uniquement si le lint passe.
+    needs: lint
 
     steps:
       - name: Checkout repository
@@ -53,7 +53,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    needs: commit-message  # On lance les tests si commit-message passe.
+    needs: commit-message
 
     steps:
       - name: Checkout repository
@@ -74,26 +74,64 @@ jobs:
           set -e
           make setup-dataset
 
+      - name: Train model
+        run: |
+          set -e
+          make train
+
+      - name: Create necessary directories
+        run: |
+          mkdir -p models/fhe_files
+          mkdir -p src/fhe_file
+
       - name: Run server in background
         run: |
           set -e
           nohup make run_server > server.log 2>&1 &
-          sleep 5
+          echo "Waiting for server to start..."
+          sleep 15
+          for i in {1..30}; do
+            if curl -s http://0.0.0.0:8000/docs > /dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "Server failed to start"
+              cat server.log
+              exit 1
+            fi
+            echo "Waiting for server... attempt $i"
+            sleep 1
+          done
 
       - name: Run client in background
         run: |
           set -e
           nohup make run_client > client.log 2>&1 &
-          sleep 5
+          echo "Waiting for client to start..."
+          sleep 15
+          for i in {1..30}; do
+            if curl -s http://127.0.0.1:8001/docs > /dev/null; then
+              echo "Client is up!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "Client failed to start"
+              cat client.log
+              exit 1
+            fi
+            echo "Waiting for client... attempt $i"
+            sleep 1
+          done
 
       - name: Run tests
         run: |
           set -e
-          make test
+          make test || (echo "Tests failed! Server log:" && cat server.log && echo "Client log:" && cat client.log && exit 1)
 
   run-notebooks:
     runs-on: ubuntu-latest
-    needs: tests  # Les notebooks sont exécutés après les tests.
+    needs: tests
 
     steps:
       - name: Checkout repository
@@ -104,13 +142,18 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install jupyter nbconvert
+
       - name: Test Jupyter notebooks
         run: |
           set -e
-          for notebook in $(find . -name "*.ipynb"); do
+          for notebook in $(find . -name "*.ipynb" -not -path "./.*"); do
             jupyter nbconvert --to notebook --execute --inplace "$notebook" || exit 1
           done
-
 
 
   # build-documentation:

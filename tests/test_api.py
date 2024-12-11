@@ -1,109 +1,179 @@
 """This module contains tests for the client API."""
 
 import os
+import time
+from dataclasses import dataclass
+from typing import Tuple, List
+
 import pytest
 import pandas as pd
 import requests
-
+from requests.exceptions import RequestException
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
+
 
 # Client API URL
 CLIENT_URL = "http://127.0.0.1:8001/predict"
 
 
-def preprocess_data(df):
+@dataclass
+class PredictionData:
+    """Class to store prediction data and reduce local variables."""
+    predictions: List[int]
+    max_retries: int
+    retry_delay: int
+    success: bool
+    last_exception: Exception = None
+
+
+def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses the dataset by removing missing values
     and handling class imbalance.
-    """
-    # Remove missing values
-    df = df.dropna()
 
-    # Handle class imbalance
+    Args:
+        df: Input DataFrame containing the raw data.
+
+    Returns:
+        Preprocessed and balanced DataFrame.
+    """
+    df = df.dropna()
     fraud = df[df["fraud"] == 1]
     non_fraud = df[df["fraud"] == 0].sample(n=len(fraud), random_state=42)
     return pd.concat([fraud, non_fraud])
 
 
-def split_data(df):
+def split_data(df: pd.DataFrame) -> Tuple:
     """
     Splits the dataset into features and target,
     and then into training and test sets.
+
+    Args:
+        df: Input DataFrame to split.
+
+    Returns:
+        Tuple containing train/test split of inputs and outputs.
     """
-    # Split features and target
     x = df.drop(columns=["fraud"])
     y = df["fraud"].astype(int)
-
-    # Split into training and test sets
     return train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
 
 
+def check_server() -> bool:
+    """
+    Verify if the server is accessible.
+
+    Returns:
+        bool: True if server is accessible, False otherwise.
+    """
+    try:
+        response = requests.get("http://127.0.0.1:8001/docs")
+        return response.status_code == 200
+    except RequestException:
+        return False
+
+
 @pytest.fixture(scope="module", name="samples_data")
-def _samples_data_fixture():
+def _samples_data_fixture() -> Tuple:
     """
     Loads the dataset, performs preprocessing,
     and returns 100 test samples with their labels.
+
+    Returns:
+        Tuple containing scaled features and their corresponding labels.
     """
-    # Path to the dataset
     data_path = os.path.join(
         os.path.abspath(os.getcwd()), "dataset", "card_transdata.csv"
     )
 
-    # Load the data (limited to 100,000 rows for performance reasons)
     df = pd.read_csv(data_path, nrows=100000)
-
-    # Preprocess the data
     balanced_df = preprocess_data(df)
-
-    # Split into training and test sets
     x_train, x_test, _, y_test = split_data(balanced_df)
 
-    # Select 100 random samples from the test set
     x_sample = x_test.sample(n=100, random_state=42)
     y_sample = y_test.loc[x_sample.index].values
 
-    # Apply the scaler
     scaler = StandardScaler()
-    scaler.fit(x_train)  # Train the scaler on the training set
+    scaler.fit(x_train)
     x_scaled = scaler.transform(x_sample)
 
     return x_scaled, y_sample
 
 
-def test_api_accuracy(samples_data):
+def process_prediction(sample: pd.Series, idx: int, pred_data: PredictionData) -> None:
+    """
+    Process a single prediction request.
+
+    Args:
+        sample: Input sample to process.
+        idx: Sample index.
+        pred_data: PredictionData instance to store results.
+    """
+    payload = {
+        "distance_from_home": float(sample[0]),
+        "distance_from_last_transaction": float(sample[1]),
+        "ratio_to_median_purchase_price": float(sample[2]),
+        "repeat_retailer": int(sample[3]),
+        "used_chip": int(sample[4]),
+        "used_pin_number": int(sample[5]),
+        "online_order": int(sample[6]),
+    }
+
+    for attempt in range(pred_data.max_retries):
+        try:
+            response = requests.post(CLIENT_URL, json=payload, timeout=500)
+            response.raise_for_status()
+            pred = response.json().get("prediction")
+            if pred is not None:
+                pred_data.predictions.append(pred)
+                pred_data.success = True
+                break
+        except RequestException as e:
+            pred_data.last_exception = e
+            print(f"Attempt {attempt + 1} failed for sample {idx}. Error: {str(e)}")
+            if attempt < pred_data.max_retries - 1:
+                time.sleep(pred_data.retry_delay)
+
+
+def test_api_accuracy(samples_data: Tuple) -> None:
     """
     Sends 100 predictions via the client API and checks the accuracy.
+
+    Args:
+        samples_data: Tuple containing test samples and their true labels.
     """
     x_scaled, y_true = samples_data
-    predictions = []
+    pred_data = PredictionData(
+        predictions=[],
+        max_retries=3,
+        retry_delay=5,
+        success=False
+    )
 
-    for _, sample in enumerate(x_scaled):
-        payload = {
-            "distance_from_home": float(sample[0]),
-            "distance_from_last_transaction": float(sample[1]),
-            "ratio_to_median_purchase_price": float(sample[2]),
-            "repeat_retailer": int(sample[3]),
-            "used_chip": int(sample[4]),
-            "used_pin_number": int(sample[5]),
-            "online_order": int(sample[6]),
-        }
+    for i in range(30):
+        if check_server():
+            break
+        if i == 29:
+            pytest.fail("Server not accessible after 30 attempts")
+        time.sleep(1)
 
-        # Send POST request to the client API
-        response = requests.post(CLIENT_URL, json=payload, timeout=500)
+    for idx, sample in enumerate(x_scaled):
+        pred_data.success = False
+        process_prediction(sample, idx, pred_data)
 
-        # Verify the request was successful
-        assert response.status_code == 200, f"Request failed with status {response.status_code}"
+        if not pred_data.success:
+            error_msg = f"Failed to get prediction for sample {idx} after "
+            error_msg += f"{pred_data.max_retries} attempts."
+            if pred_data.last_exception:
+                error_msg += f" Last error: {str(pred_data.last_exception)}"
+            pytest.fail(error_msg)
 
-        # Retrieve the prediction
-        pred = response.json().get("prediction")
-        assert pred is not None, "Prediction is None"
-        predictions.append(pred)
+    assert len(pred_data.predictions) == len(x_scaled), (
+        f"Expected {len(x_scaled)} predictions but got {len(pred_data.predictions)}"
+    )
 
-    # Calculate accuracy
-    accuracy = accuracy_score(y_true, predictions)
-    print(f"Accuracy on 100 predictions: {accuracy * 100:.2f}%")
-
-    # Verify the accuracy is at least 80%
+    accuracy = accuracy_score(y_true, pred_data.predictions)
+    print(f"Accuracy on {len(pred_data.predictions)} predictions: {accuracy * 100:.2f}%")
     assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
