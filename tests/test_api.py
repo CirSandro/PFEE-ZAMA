@@ -43,7 +43,7 @@ def split_data(df):
 
 
 @pytest.fixture(scope="module")
-def data_to_predict():
+def data_samples():
     """
     Loads the dataset, performs preprocessing,
     and returns 100 test samples with their labels.
@@ -74,11 +74,11 @@ def data_to_predict():
     return x_scaled, y_sample
 
 
-def test_api_accuracy(data_to_predict):
+def test_api_accuracy(data_samples):
     """
     Sends 100 predictions via the client API and checks the accuracy.
     """
-    x_scaled, y_true = data_to_predict
+    x_scaled, y_true = data_samples
     predictions = []
 
     for _, sample in enumerate(x_scaled):
@@ -96,9 +96,7 @@ def test_api_accuracy(data_to_predict):
         response = requests.post(CLIENT_URL, json=payload, timeout=500)
 
         # Verify the request was successful
-        assert (
-            response.status_code == 200
-        ), f"Request failed with status {response.status_code}"
+        assert response.status_code == 200, f"Request failed with status {response.status_code}"
 
         # Retrieve the prediction
         pred = response.json().get("prediction")
