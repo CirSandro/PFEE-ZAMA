@@ -69,7 +69,7 @@ def check_server() -> bool:
         bool: True if server is accessible, False otherwise.
     """
     try:
-        response = requests.get("http://127.0.0.1:8001/docs")
+        response = requests.get("http://127.0.0.1:8001/docs", timeout=5)
         return response.status_code == 200
     except RequestException:
         return False
