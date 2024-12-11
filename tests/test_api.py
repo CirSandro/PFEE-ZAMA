@@ -43,17 +43,17 @@ def split_data(df):
 
 
 @pytest.fixture(scope="module")
-def test_data():
+def data_to_predict():
     """
     Loads the dataset, performs preprocessing,
-    and returns 10 test samples with their labels.
+    and returns 100 test samples with their labels.
     """
     # Path to the dataset
     data_path = os.path.join(
         os.path.abspath(os.getcwd()), "dataset", "card_transdata.csv"
     )
 
-    # Load the data (limited to 100,000 rows)
+    # Load the data (limited to 100,000 rows for performance reasons)
     df = pd.read_csv(data_path, nrows=100000)
 
     # Preprocess the data
@@ -62,8 +62,8 @@ def test_data():
     # Split into training and test sets
     x_train, x_test, _, y_test = split_data(balanced_df)
 
-    # Select 10 random samples from the test set
-    x_sample = x_test.sample(n=10, random_state=42)
+    # Select 100 random samples from the test set
+    x_sample = x_test.sample(n=100, random_state=42)
     y_sample = y_test.loc[x_sample.index].values
 
     # Apply the scaler
@@ -76,7 +76,7 @@ def test_data():
 
 def test_api_accuracy(data_to_predict):
     """
-    Sends 10 predictions via the client API and checks the accuracy.
+    Sends 100 predictions via the client API and checks the accuracy.
     """
     x_scaled, y_true = data_to_predict
     predictions = []
@@ -107,7 +107,7 @@ def test_api_accuracy(data_to_predict):
 
     # Calculate accuracy
     accuracy = accuracy_score(y_true, predictions)
-    print(f"Accuracy on 10 predictions: {accuracy * 100:.2f}%")
+    print(f"Accuracy on 100 predictions: {accuracy * 100:.2f}%")
 
-    # Verify the accuracy is acceptable (e.g., at least 70%)
-    assert accuracy >= 0.7, f"Accuracy too low: {accuracy * 100:.2f}%"
+    # Verify the accuracy is at least 80%
+    assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
