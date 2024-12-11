@@ -107,3 +107,4 @@ def test_api_accuracy(samples):
 
     # Verify the accuracy is at least 80%
     assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
+    
