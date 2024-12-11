@@ -40,8 +40,8 @@ def split_data(df):
     return train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
 
 
-@pytest.fixture(scope="module")
-def data_samples_fixture():
+@pytest.fixture(scope="module", name="samples_data")
+def _samples_data_fixture():
     """
     Loads the dataset, performs preprocessing,
     and returns 100 test samples with their labels.
@@ -72,11 +72,11 @@ def data_samples_fixture():
     return x_scaled, y_sample
 
 
-def test_api_accuracy(samples):
+def test_api_accuracy(samples_data):
     """
     Sends 100 predictions via the client API and checks the accuracy.
     """
-    x_scaled, y_true = samples
+    x_scaled, y_true = samples_data
     predictions = []
 
     for _, sample in enumerate(x_scaled):
@@ -107,4 +107,3 @@ def test_api_accuracy(samples):
 
     # Verify the accuracy is at least 80%
     assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
-    
