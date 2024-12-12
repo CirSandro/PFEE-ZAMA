@@ -1,6 +1,17 @@
 """
 Module for training and deploying an FHE-enabled
 Random Forest model using Concrete ML.
+
+This module trains a Random Forest model on a balanced dataset of credit card
+fraud transactions, applies homomorphic encryption to the trained model using
+Concrete ML, and saves the necessary files for later deployment.
+
+The following steps are performed:
+1. Data loading and preprocessing
+2. Balancing the dataset
+3. Feature scaling
+4. Model training
+5. Homomorphic encryption and model deployment
 """
 
 import os
