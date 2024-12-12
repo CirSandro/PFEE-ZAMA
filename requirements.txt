@@ -18,6 +18,7 @@ flake8
 black
 pylint
 xgboost==1.6.2
+nbqa
 pytest-notebook
 matplotlib
 seaborn
