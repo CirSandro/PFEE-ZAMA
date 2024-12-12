@@ -11,6 +11,10 @@ import joblib
 def load_data(path):
     """
     Load dataset from the given path.
+    Args:
+        path (str): Path to the dataset.
+    Returns:
+        dataframe (pandas.DataFrame):
     """
     return pd.read_csv(path)
 
@@ -19,6 +23,11 @@ def split_data(dataframe):
     """
     Balance the dataset to have equal numbers of fraud and non-fraud cases.
     Split the dataset into features and target.
+    Args:
+        dataframe (pandas.DataFrame): Input data.
+    Returns:
+        features (pandas.DataFrame): Features.
+        target (pandas.Series): Target.
     """
     fraud = dataframe[dataframe["fraud"] == 1]
     non_fraud = dataframe[dataframe["fraud"] == 0].sample(n=len(fraud), random_state=42)

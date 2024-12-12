@@ -17,7 +17,10 @@ from concrete.ml.sklearn.xgb import XGBClassifier
 
 def get_models():
     """
-    Return a dictionary of Sklearn and FHE models to compare.
+    Args:
+        None
+    Returns:
+        models (dict): A dictionary of Sklearn and FHE models to compare.
     """
     models = {
         "Random Forest": (

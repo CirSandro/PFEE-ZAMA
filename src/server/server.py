@@ -41,6 +41,10 @@ async def predict(request: PredictRequest):
     """
     Predict endpoint: receives encrypted input data, runs the FHE model,
     and returns encrypted predictions.
+    Args:
+        request (PredictRequest): Encrypted input data in hex-encoded string format.
+    Returns:
+        dict: Encrypted predictions in hex-encoded string format.
     """
     encrypted_data = bytes.fromhex(request.data)
     encrypted_result = server.run(

@@ -19,7 +19,7 @@ fi
 
 # Run Pylint
 echo "Running Pylint..."
-pylint .
+pylint --rcfile=.pylintrc .
 
 if [ $? -ne 0 ]; then
   echo "Pylint found issues."

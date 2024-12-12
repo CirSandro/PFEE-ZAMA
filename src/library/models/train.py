@@ -15,6 +15,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 def train_models(models, x_train, y_train):
     """
     Train multiple models.
+    Args:
+        models (dict): A dictionary of Sklearn and FHE models to compare.
+        x_train (numpy.ndarray): Training features.
+        y_train (numpy.ndarray): Training labels.
+    Returns:
+        trained_models (dict): A dictionary of trained models.
+        training_times (dict): A dictionary of training times.
     """
     y_train = y_train.astype(int)
 

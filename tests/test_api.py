@@ -19,6 +19,10 @@ def preprocess_data(df):
     """
     Preprocesses the dataset by removing missing values
     and handling class imbalance.
+    Args:
+        df (pandas.DataFrame): Input data.
+    Returns:
+        balanced_df (pandas.DataFrame): Preprocessed data.
     """
     # Remove missing values
     df = df.dropna()
@@ -33,6 +37,13 @@ def split_data(df):
     """
     Splits the dataset into features and target,
     and then into training and test sets.
+    Args:
+        df (pandas.DataFrame): Input data.
+    Returns:
+        x_train (pandas.DataFrame): Training features.
+        x_test (pandas.DataFrame): Test features.
+        y_train (pandas.Series): Training target.
+        y_test (pandas.Series): Test target.
     """
     # Split features and target
     x = df.drop(columns=["fraud"])
@@ -47,6 +58,11 @@ def test_data():
     """
     Loads the dataset, performs preprocessing,
     and returns 10 test samples with their labels.
+    Args:
+        None
+    Returns:
+        x_scaled (numpy.ndarray): Scaled test features.
+        y_sample (numpy.ndarray): Test labels.
     """
     # Path to the dataset
     data_path = os.path.join(
@@ -77,6 +93,10 @@ def test_data():
 def test_api_accuracy(data_to_predict):
     """
     Sends 10 predictions via the client API and checks the accuracy.
+    Args:
+        data_to_predict (tuple): Test features and labels.
+    Returns:
+        None
     """
     x_scaled, y_true = data_to_predict
     predictions = []
