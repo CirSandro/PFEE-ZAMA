@@ -1,5 +1,10 @@
 """
 This script trains multiple models and stores them in a dictionary.
+
+This script loads a set of machine learning models, trains them on a given
+training dataset, and stores both the trained models and their corresponding
+training times in a dictionary. The trained models include both Sklearn and
+Fully Homomorphic Encryption (FHE) versions of various classifiers.
 """
 
 import time
@@ -14,14 +19,22 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 def train_models(models, x_train, y_train):
     """
-    Train multiple models.
+    This function takes a dictionary of models and their corresponding Sklearn
+    and FHE versions, trains the Sklearn models on the provided training data,
+    and stores the trained models and their training times.
+
     Args:
-        models (dict): A dictionary of Sklearn and FHE models to compare.
-        x_train (numpy.ndarray): Training features.
-        y_train (numpy.ndarray): Training labels.
+        models (dict): A dictionary where each key is a model name and each value is a
+                       tuple containing the Sklearn model and the FHE model.
+        x_train (array-like): The training feature set (input data).
+        y_train (array-like): The training target set (labels).
+
     Returns:
-        trained_models (dict): A dictionary of trained models.
-        training_times (dict): A dictionary of training times.
+        tuple: A tuple containing:
+            - trained_models (dict): A dictionary where each key is a model name, and each value is
+                                     a tuple containing the trained Sklearn and FHE models.
+            - training_times (dict): A dictionary where each key is a model name, and each value is
+                                     the time taken to train the Sklearn model.
     """
     y_train = y_train.astype(int)
 
@@ -44,6 +57,13 @@ def train_models(models, x_train, y_train):
 def main():
     """
     Main function to train models.
+
+    This function loads the training data, trains the models using the
+    `train_models` function, and stores the trained models and their
+    training times in a file.
+
+    Returns:
+        None
     """
     models = get_models()
     x_train, _, _, y_train, _, _ = joblib.load("library/data/processed_data.pkl")

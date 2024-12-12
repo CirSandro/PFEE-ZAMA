@@ -1,6 +1,10 @@
 """
 Module for evaluating the performance of trained models
 using both Sklearn and FHE implementations.
+
+This module includes functionality to compare the accuracy and
+execution times of models trained with Scikit-learn and
+Fully Homomorphic Encryption (FHE). Results are saved as a CSV file.
 """
 
 import time
@@ -13,13 +17,43 @@ def evaluate_models(models, datasets, training_times):
     """
     Evaluate trained models and compare performance.
 
+    This function computes accuracy and execution time metrics
+    for Scikit-learn and FHE models and calculates their ratios.
+
     Args:
-        models (dict): Dictionary containing Sklearn and FHE models.
-        datasets (dict): Dictionary with training and validation datasets.
-        training_times (dict): Training times for Sklearn models.
+        models (dict):
+            Dictionary where keys are model names and values are tuples
+            containing Scikit-learn and FHE models:
+            {
+                "model_name": (sklearn_model, fhe_model)
+            }.
+        datasets (dict):
+            Dictionary containing training and validation datasets:
+            {
+                "x_train": np.ndarray, "x_val": np.ndarray,
+                "y_train": np.ndarray, "y_val": np.ndarray
+            }.
+        training_times (dict):
+            Dictionary containing training times for Scikit-learn models:
+            {
+                "model_name": float
+            }.
 
     Returns:
-        list: A list of dictionaries containing evaluation results.
+        list: A list of dictionaries, where each dictionary contains
+        evaluation metrics for a model:
+        [
+            {
+                "Model": str,
+                "Sklearn Accuracy": float,
+                "FHE Accuracy": float,
+                "Sklearn Time": float,
+                "FHE Time": float,
+                "Time Ratio (FHE/Sklearn)": float,
+                "Accuracy Ratio (FHE/Sklearn)": float
+            },
+            ...
+        ].
     """
     x_train, y_train = datasets["x_train"], datasets["y_train"].astype(int)
     x_val, y_val = datasets["x_val"], datasets["y_val"].astype(int)
@@ -55,6 +89,18 @@ def evaluate_models(models, datasets, training_times):
 def main():
     """
     Main function to load data, evaluate models, and save results.
+
+    This function loads processed data and pre-trained models,
+    evaluates their performance using `evaluate_models`, and saves
+    the results to a CSV file.
+
+    Steps:
+    1. Load the processed datasets and models from serialized files.
+    2. Evaluate the models on accuracy and execution time metrics.
+    3. Save the evaluation results in a CSV file for further analysis.
+
+    Outputs:
+        results.csv: A CSV file containing model evaluation metrics.
     """
     # Load data and models
     x_train, x_val, _, y_train, y_val, _ = joblib.load(
