@@ -10,7 +10,6 @@ import pandas as pd
 import requests
 from requests.exceptions import RequestException
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
 
@@ -54,7 +53,7 @@ def split_data(df: pd.DataFrame) -> Tuple:
         df: Input DataFrame to split.
 
     Returns:
-        Tuple containing train/test split of inputs and outputs.
+        Tuple containing training and test features and labels.
     """
     x = df.drop(columns=["fraud"])
     y = df["fraud"].astype(int)
@@ -82,24 +81,17 @@ def _samples_data_fixture() -> Tuple:
     and returns 100 test samples with their labels.
 
     Returns:
-        Tuple containing scaled features and their corresponding labels.
+        Tuple containing features and their corresponding labels.
     """
     data_path = os.path.join(
         os.path.abspath(os.getcwd()), "dataset", "card_transdata.csv"
     )
-
     df = pd.read_csv(data_path, nrows=100000)
     balanced_df = preprocess_data(df)
-    x_train, x_test, _, y_test = split_data(balanced_df)
-
+    _, x_test, _, y_test = split_data(balanced_df)
     x_sample = x_test.sample(n=100, random_state=42)
     y_sample = y_test.loc[x_sample.index].values
-
-    scaler = StandardScaler()
-    scaler.fit(x_train)
-    x_scaled = scaler.transform(x_sample)
-
-    return x_scaled, y_sample
+    return x_sample, y_sample
 
 
 def process_prediction(sample: pd.Series, idx: int, pred_data: PredictionData) -> None:
@@ -112,13 +104,13 @@ def process_prediction(sample: pd.Series, idx: int, pred_data: PredictionData) -
         pred_data: PredictionData instance to store results.
     """
     payload = {
-        "distance_from_home": float(sample[0]),
-        "distance_from_last_transaction": float(sample[1]),
-        "ratio_to_median_purchase_price": float(sample[2]),
-        "repeat_retailer": int(sample[3]),
-        "used_chip": int(sample[4]),
-        "used_pin_number": int(sample[5]),
-        "online_order": int(sample[6]),
+        "distance_from_home": float(sample["distance_from_home"]),
+        "distance_from_last_transaction": float(sample["distance_from_last_transaction"]),
+        "ratio_to_median_purchase_price": float(sample["ratio_to_median_purchase_price"]),
+        "repeat_retailer": int(sample["repeat_retailer"]),
+        "used_chip": int(sample["used_chip"]),
+        "used_pin_number": int(sample["used_pin_number"]),
+        "online_order": int(sample["online_order"]),
     }
 
     for attempt in range(pred_data.max_retries):
@@ -144,7 +136,7 @@ def test_api_accuracy(samples_data: Tuple) -> None:
     Args:
         samples_data: Tuple containing test samples and their true labels.
     """
-    x_scaled, y_true = samples_data
+    x_samples, y_true = samples_data
     pred_data = PredictionData(
         predictions=[],
         max_retries=3,
@@ -159,9 +151,9 @@ def test_api_accuracy(samples_data: Tuple) -> None:
             pytest.fail("Server not accessible after 30 attempts")
         time.sleep(1)
 
-    for idx, sample in enumerate(x_scaled):
+    for idx, sample in enumerate(x_samples.iterrows()):
         pred_data.success = False
-        process_prediction(sample, idx, pred_data)
+        process_prediction(sample[1], idx, pred_data)
 
         if not pred_data.success:
             error_msg = f"Failed to get prediction for sample {idx} after "
@@ -170,8 +162,8 @@ def test_api_accuracy(samples_data: Tuple) -> None:
                 error_msg += f" Last error: {str(pred_data.last_exception)}"
             pytest.fail(error_msg)
 
-    assert len(pred_data.predictions) == len(x_scaled), (
-        f"Expected {len(x_scaled)} predictions but got {len(pred_data.predictions)}"
+    assert len(pred_data.predictions) == len(x_samples), (
+        f"Expected {len(x_samples)} predictions but got {len(pred_data.predictions)}"
     )
 
     accuracy = accuracy_score(y_true, pred_data.predictions)
