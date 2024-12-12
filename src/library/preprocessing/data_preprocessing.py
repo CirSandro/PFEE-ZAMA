@@ -1,5 +1,15 @@
 """
-This module contains functions to load and preprocess the dataset.
+This module contains functions to load and preprocess the dataset for training.
+It includes functions to load the dataset, balance the class distribution,
+split the data into training, validation, and test sets, and scale the features
+using StandardScaler. The preprocessed data is then saved for later use.
+
+Functions:
+    - load_data: Loads the dataset from a specified path.
+    - split_data: Balances the dataset and separates features and target variable.
+    - preprocess_data: Splits the data into training, validation, and test sets,
+      scales the features, and saves the processed data.
+    - main: Loads and preprocesses the data.
 """
 
 import pandas as pd
@@ -11,6 +21,12 @@ import joblib
 def load_data(path):
     """
     Load dataset from the given path.
+
+    Args:
+        path (str): Path to the CSV file containing the dataset.
+
+    Returns:
+        pd.DataFrame: Loaded dataset as a pandas DataFrame.
     """
     return pd.read_csv(path)
 
@@ -18,7 +34,13 @@ def load_data(path):
 def split_data(dataframe):
     """
     Balance the dataset to have equal numbers of fraud and non-fraud cases.
-    Split the dataset into features and target.
+    Separates the dataset into features and target variables.
+
+    Args:
+        dataframe (pd.DataFrame): The dataset to be split.
+
+    Returns:
+        tuple: A tuple containing the features (X) and the target (y).
     """
     fraud = dataframe[dataframe["fraud"] == 1]
     non_fraud = dataframe[
@@ -32,9 +54,15 @@ def split_data(dataframe):
 
 def preprocess_data(dataframe):
     """
-    Balance the dataset to have equal numbers of fraud and non-fraud cases.
-    Split the dataset into training, validation, and test sets.
-    Scale the features using StandardScaler.
+    Preprocess the dataset by balancing the class distribution, splitting it into
+    training, validation, and test sets, and scaling the features using StandardScaler.
+
+    Args:
+        dataframe (pd.DataFrame): The raw dataset to be preprocessed.
+
+    Returns:
+        tuple: A tuple containing the scaled training, validation, and test features
+               and their corresponding target variables.
     """
 
     features, target = split_data(dataframe)
