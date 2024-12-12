@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 24.10.0  # Remplacez par la dernière version stable
+    rev: 24.10.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
