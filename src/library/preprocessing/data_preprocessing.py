@@ -21,8 +21,7 @@ def split_data(dataframe):
     Split the dataset into features and target.
     """
     fraud = dataframe[dataframe["fraud"] == 1]
-    non_fraud = dataframe[
-        dataframe["fraud"] == 0].sample(n=len(fraud), random_state=42)
+    non_fraud = dataframe[dataframe["fraud"] == 0].sample(n=len(fraud), random_state=42)
     balanced_df = pd.concat([fraud, non_fraud])
 
     features = balanced_df.drop(columns=["fraud"])
@@ -40,10 +39,9 @@ def preprocess_data(dataframe):
     features, target = split_data(dataframe)
 
     # Split into training, validation, and test sets
-    train_features, test_features, train_target, test_target = \
-        train_test_split(
-            features, target, test_size=0.2, random_state=42, stratify=target
-        )
+    train_features, test_features, train_target, test_target = train_test_split(
+        features, target, test_size=0.2, random_state=42, stratify=target
+    )
     train_features, val_features, train_target, val_target = train_test_split(
         train_features,
         train_target,

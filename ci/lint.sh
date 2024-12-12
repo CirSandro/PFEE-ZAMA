@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Run Black
+echo "Running Black..."
+black --check .
+
+if [ $? -ne 0 ]; then
+  echo "Black found issues. Please run 'black .' to format your code."
+  exit 1
+fi
 # Run Flake8
 echo "Running Flake8..."
 flake8 .

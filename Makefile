@@ -63,6 +63,9 @@ unzip-dataset: download-dataset
 
 # Complete recipe that downloads and unzips the dataset
 setup-dataset: download-dataset unzip-dataset
+# format code using black
+format:
+	black .
 
 # # Catch-all target: route all unknown targets to Sphinx using the new
 # # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).

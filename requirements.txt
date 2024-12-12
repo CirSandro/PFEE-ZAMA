@@ -17,4 +17,5 @@ pydantic
 flake8
 black
 pylint
+flake8-black
 xgboost==1.6.2
