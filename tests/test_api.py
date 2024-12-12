@@ -167,5 +167,8 @@ def test_api_accuracy(samples_data: Tuple) -> None:
     )
 
     accuracy = accuracy_score(y_true, pred_data.predictions)
+    print(f"\n{'='*50}")
     print(f"Accuracy on {len(pred_data.predictions)} predictions: {accuracy * 100:.2f}%")
+    print(f"{'='*50}\n")
+
     assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
