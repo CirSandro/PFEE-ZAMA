@@ -20,6 +20,7 @@ CLIENT_URL = "http://127.0.0.1:8001/predict"
 @dataclass
 class PredictionData:
     """Class to store prediction data and reduce local variables."""
+
     predictions: List[int]
     max_retries: int
     retry_delay: int
@@ -106,8 +107,12 @@ def process_prediction(sample: pd.Series, idx: int, pred_data: PredictionData) -
     """
     payload = {
         "distance_from_home": float(sample["distance_from_home"]),
-        "distance_from_last_transaction": float(sample["distance_from_last_transaction"]),
-        "ratio_to_median_purchase_price": float(sample["ratio_to_median_purchase_price"]),
+        "distance_from_last_transaction": float(
+            sample["distance_from_last_transaction"]
+        ),
+        "ratio_to_median_purchase_price": float(
+            sample["ratio_to_median_purchase_price"]
+        ),
         "repeat_retailer": int(sample["repeat_retailer"]),
         "used_chip": int(sample["used_chip"]),
         "used_pin_number": int(sample["used_pin_number"]),
@@ -139,10 +144,7 @@ def test_api_accuracy(samples_data: Tuple) -> None:
     """
     x_samples, y_true = samples_data
     pred_data = PredictionData(
-        predictions=[],
-        max_retries=3,
-        retry_delay=5,
-        success=False
+        predictions=[], max_retries=3, retry_delay=5, success=False
     )
 
     for i in range(30):
@@ -163,13 +165,15 @@ def test_api_accuracy(samples_data: Tuple) -> None:
                 error_msg += f" Last error: {str(pred_data.last_exception)}"
             pytest.fail(error_msg)
 
-    assert len(pred_data.predictions) == len(x_samples), (
-        f"Expected {len(x_samples)} predictions but got {len(pred_data.predictions)}"
-    )
+    assert len(pred_data.predictions) == len(
+        x_samples
+    ), f"Expected {len(x_samples)} predictions but got {len(pred_data.predictions)}"
 
     accuracy = accuracy_score(y_true, pred_data.predictions)
     print(f"\n{'='*50}")
-    print(f"Accuracy on {len(pred_data.predictions)} predictions: {accuracy * 100:.2f}%")
+    print(
+        f"Accuracy on {len(pred_data.predictions)} predictions: {accuracy * 100:.2f}%"
+    )
     print(f"{'='*50}\n")
 
     assert accuracy >= 0.8, f"Accuracy too low: {accuracy * 100:.2f}%"
