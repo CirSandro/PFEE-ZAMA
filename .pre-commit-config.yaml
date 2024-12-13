@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-black]
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: python
+        types: [python]
+        additional_dependencies:
+          - pylint==3.3.1
+          - pandas
+          - joblib
+          - scikit-learn
+          - concrete-ml
+          - requests
+          - numpy
+          - pydantic
+          - fastapi
+          - uvicorn
+          - pytest
+          - xgboost
+        args: ["--rcfile=.pylintrc"]

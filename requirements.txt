@@ -16,7 +16,8 @@ nbconvert
 pydantic
 flake8
 black
-pylint
+pylint==3.3.1
+flake8-black
 xgboost==1.6.2
 requests
 nbqa

@@ -31,12 +31,10 @@ def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses the dataset by removing missing values
     and handling class imbalance.
-
     Args:
-        df: Input DataFrame containing the raw data.
-
+        df (pandas.DataFrame): Input data.
     Returns:
-        Preprocessed and balanced DataFrame.
+        balanced_df (pandas.DataFrame): Preprocessed data.
     """
     df = df.dropna()
     fraud = df[df["fraud"] == 1]
@@ -48,12 +46,13 @@ def split_data(df: pd.DataFrame) -> Tuple:
     """
     Splits the dataset into features and target,
     and then into training and test sets.
-
     Args:
-        df: Input DataFrame to split.
-
+        df (pandas.DataFrame): Input data.
     Returns:
-        Tuple containing training and test features and labels.
+        x_train (pandas.DataFrame): Training features.
+        x_test (pandas.DataFrame): Test features.
+        y_train (pandas.Series): Training target.
+        y_test (pandas.Series): Test target.
     """
     x = df.drop(columns=["fraud"])
     y = df["fraud"].astype(int)
@@ -79,9 +78,11 @@ def _samples_data_fixture() -> Tuple:
     """
     Loads the dataset, performs preprocessing,
     and returns 100 test samples with their labels.
-
+    Args:
+        None
     Returns:
-        Tuple containing features and their corresponding labels.
+        x_scaled (numpy.ndarray): Scaled test features.
+        y_sample (numpy.ndarray): Test labels.
     """
     data_path = os.path.join(
         os.path.abspath(os.getcwd()), "dataset", "card_transdata.csv"

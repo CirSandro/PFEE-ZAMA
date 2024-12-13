@@ -22,8 +22,6 @@ from concrete.ml.sklearn.xgb import XGBClassifier
 
 def get_models():
     """
-    Return a dictionary of Sklearn and FHE models to compare.
-
     This function returns a dictionary where the keys are the names of the models
     and the values are tuples containing the Sklearn model and the corresponding
     FHE model. These models are used to compare the performance of traditional
