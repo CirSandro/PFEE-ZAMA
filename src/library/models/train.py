@@ -19,8 +19,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 def train_models(models, x_train, y_train):
     """
-    Train multiple models.
-
     This function takes a dictionary of models and their corresponding Sklearn
     and FHE versions, trains the Sklearn models on the provided training data,
     and stores the trained models and their training times.
